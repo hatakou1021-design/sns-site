@@ -96,11 +96,9 @@ body {
   display: none;
 }
 
-/* Authentication section styles */
+/* Deprecated auth-section styles; replaced by auth-container for local auth */
 .auth-section {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: none;
 }
 
 .user-info {
@@ -115,5 +113,58 @@ body {
   border: none;
   color: #fff;
   border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Authentication container styles for login and registration forms */
+.auth-container {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  max-width: 400px;
+  margin: 2rem auto;
+}
+
+.auth-container h2 {
+  margin-top: 0;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container input {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.auth-container button {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.auth-container button:hover {
+  opacity: 0.9;
+}
+
+.auth-container p {
+  font-size: 0.9rem;
+}
+
+.auth-container a {
+  color: var(--primary-color);
+  text-decoration: underline;
   cursor: pointer;
 }
