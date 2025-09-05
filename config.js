@@ -5,9 +5,9 @@
 window.CONFIG = {
   siteName: 'MySNS',
   theme: {
-    primaryColor: '#007bff',
-    secondaryColor: '#f4f4f4',
-    accentColor: '#ff4081',
-    textColor: '#333'
+    primaryColor: '#009688',
+    secondaryColor: '#e0f2f1',
+    accentColor: '#ff7043',
+    textColor: '#333333'
   }
 };
