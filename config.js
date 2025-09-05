@@ -3,11 +3,11 @@
 // and theme colours without touching the core application logic. Simply
 // reload the page after saving your changes.
 window.CONFIG = {
-  siteName: 'MySNS',
+  siteName: 'Yua',
   theme: {
-    primaryColor: '#009688',
-    secondaryColor: '#e0f2f1',
-    accentColor: '#ff7043',
+    primaryColor: '#de003a',
+    secondaryColor: '#ffd700',
+    accentColor: '#c2185b',
     textColor: '#333333'
   }
 };
