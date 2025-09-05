@@ -5,22 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><!-- will be set dynamically --></title>
   <link rel="stylesheet" href="styles.css">
-  <!-- Google Identity Services for authentication -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- Removed Google Identity Services: using local registration/login instead -->
 </head>
 <body>
   <header class="header">
     <h1 id="siteTitle">MySNS</h1>
-    <!-- Authentication section: shows login button or user info -->
-    <div id="authSection" class="auth-section">
-      <div id="loginContainer"></div>
-      <div id="userInfo" class="hidden user-info">
-        <span id="userName"></span>
-        <button id="logoutButton">ログアウト</button>
-      </div>
+    <!-- Logged-in user info and logout button -->
+    <div id="userInfo" class="hidden user-info">
+      <span id="userName"></span>
+      <button id="logoutButton">ログアウト</button>
     </div>
   </header>
+
   <main class="container">
+    <!-- Authentication container: login and registration forms -->
+    <div id="authContainer" class="auth-container">
+      <!-- Login form -->
+      <div id="loginFormContainer">
+      <h2>ログイン</h2>
+      <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="メールアドレス" required />
+        <input type="password" id="loginPassword" placeholder="パスワード" required />
+        <button type="submit">ログイン</button>
+      </form>
+      <p>アカウントをお持ちでない場合は
+        <a href="#" id="showRegister">新規登録</a>
+      </p>
+      </div>
+      <!-- Registration form -->
+      <div id="registerFormContainer" class="hidden">
+      <h2>新規登録</h2>
+      <form id="registerForm">
+        <input type="text" id="registerUsername" placeholder="ユーザー名" required />
+        <input type="email" id="registerEmail" placeholder="メールアドレス" required />
+        <input type="password" id="registerPassword" placeholder="パスワード" required />
+        <button type="submit">登録</button>
+      </form>
+      <p>既にアカウントをお持ちですか？
+        <a href="#" id="showLogin">ログイン</a>
+      </p>
+      </div>
+    </div>
+    <!-- Posting form, hidden when not authenticated -->
     <section class="post-form">
       <h2>新しい投稿</h2>
       <form id="postForm">
@@ -28,6 +54,7 @@
         <button type="submit">投稿</button>
       </form>
     </section>
+    <!-- Feed section -->
     <section id="feed" class="feed">
       <!-- posts will render here -->
     </section>
