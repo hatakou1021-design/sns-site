@@ -1,7 +1,7 @@
 :root {
-  --primary-color: #007bff;
-  --secondary-color: #f4f4f4;
-  --accent-color: #ff4081;
+  --primary-color: #de003a;
+  --secondary-color: #ffd700;
+  --accent-color: #c2185b;
   --text-color: #333;
 }
 
@@ -13,17 +13,21 @@ body {
 }
 
 .header {
-  background-color: var(--primary-color);
+  /* Gradient header and accent bar */
+  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+  border-bottom: 4px solid var(--secondary-color);
   color: #fff;
-  padding: 1rem 2rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
 
-.header h1 {
-  margin: 0;
-  font-size: 1.5rem;
+/* Logo styling */
+.logo {
+  height: 40px;
+  width: auto;
 }
 
 .container {
@@ -167,4 +171,55 @@ body {
   color: var(--primary-color);
   text-decoration: underline;
   cursor: pointer;
+}
+
+/* Story bar styles */
+.story-bar {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+}
+.story-item {
+  text-align: center;
+  flex: 0 0 auto;
+  width: 60px;
+}
+.story-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
+  border: 3px solid var(--accent-color);
+}
+.story-item span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--text-color);
+  white-space: nowrap;
+}
+
+/* Categories bar styles */
+.categories {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.category-chip {
+  background: var(--secondary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.category-chip.active {
+  background: var(--primary-color);
+  color: #fff;
 }
