@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><!-- will be set dynamically --></title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Google Identity Services for authentication -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <header class="header">
+    <h1 id="siteTitle">MySNS</h1>
+    <!-- Authentication section: shows login button or user info -->
+    <div id="authSection" class="auth-section">
+      <div id="loginContainer"></div>
+      <div id="userInfo" class="hidden user-info">
+        <span id="userName"></span>
+        <button id="logoutButton">ログアウト</button>
+      </div>
+    </div>
+  </header>
+  <main class="container">
+    <section class="post-form">
+      <h2>新しい投稿</h2>
+      <form id="postForm">
+        <textarea id="postContent" placeholder="いまどうしてる？" rows="3" required></textarea>
+        <button type="submit">投稿</button>
+      </form>
+    </section>
+    <section id="feed" class="feed">
+      <!-- posts will render here -->
+    </section>
+  </main>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
