@@ -1,107 +1,204 @@
 // auth.js
-// Handles client-side authentication using Google Identity Services.
-// This script renders a Google sign-in button and manages the
-// authenticated user state. After successful login, user details
-// are stored in localStorage under the key 'sns-user'. To make this
-// work you must replace YOUR_GOOGLE_CLIENT_ID with a valid OAuth 2.0
-// client ID obtained from Google Cloud Console.
+// Implements a simple client-side authentication system using localStorage.
+// Users can register with a username, email and password. Credentials
+// are stored in the browser's localStorage under the key 'sns-users'.
+// The currently logged-in user is stored under the key 'sns-user'.
+// NOTE: This is intended only for prototyping and does not provide
+// real security. For production use, implement server-side authentication.
 
 (function() {
-  const CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
+  const usersKey = 'sns-users';
   const userKey = 'sns-user';
 
-  // Decode JWT token (credential) returned by Google. The response
-  // contains a base64-encoded JSON payload. We decode and parse it to
-  // extract user information.
-  function decodeJwt(token) {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
+  // Helper to load users array from localStorage
+  function loadUsers() {
+    const data = localStorage.getItem(usersKey);
+    if (!data) return [];
     try {
-      const payload = parts[1]
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
-      const decoded = JSON.parse(atob(payload));
-      return decoded;
+      return JSON.parse(data);
     } catch (err) {
-      console.error('Failed to decode JWT:', err);
-      return null;
+      console.error('Failed to parse users', err);
+      return [];
     }
   }
 
-  // Called when Google returns a credential. We decode the JWT and
-  // persist minimal user info to localStorage. Then update the UI.
-  function handleCredentialResponse(response) {
-    const data = decodeJwt(response.credential);
-    if (data) {
-      const user = {
-        id: data.sub,
-        name: data.name,
-        email: data.email,
-        picture: data.picture
-      };
-      localStorage.setItem(userKey, JSON.stringify(user));
-      updateAuthUI();
-      // reload the page to ensure app.js picks up the user and re-renders
-      location.reload();
+  // Helper to save users array to localStorage
+  function saveUsers(users) {
+    try {
+      localStorage.setItem(usersKey, JSON.stringify(users));
+    } catch (err) {
+      console.error('Failed to save users', err);
     }
   }
 
-  // Update UI elements based on login state. When logged out, show
-  // the Google sign-in button container. When logged in, display the
-  // user's name and a logout button. The logout button clears
-  // localStorage and refreshes the page.
-  function updateAuthUI() {
+  // Very simple password hash using Base64. This is NOT secure.
+  function hashPassword(pw) {
+    try {
+      return btoa(unescape(encodeURIComponent(pw)));
+    } catch (err) {
+      // fallback plain if encoding fails
+      return pw;
+    }
+  }
+
+  // Register a new user. Returns true on success, false otherwise.
+  function registerUser(username, email, password) {
+    const users = loadUsers();
+    // Check for duplicate email
+    const existing = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (existing) {
+      alert('このメールアドレスは既に登録されています。');
+      return false;
+    }
+    const newUser = {
+      id: Date.now().toString(),
+      name: username,
+      username: username,
+      email: email,
+      passwordHash: hashPassword(password)
+    };
+    users.push(newUser);
+    saveUsers(users);
+    // Save current user to login automatically
+    localStorage.setItem(userKey, JSON.stringify({
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email
+    }));
+    return true;
+  }
+
+  // Attempt to log in with provided credentials. Returns true on success.
+  function loginUser(email, password) {
+    const users = loadUsers();
+    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (!user) {
+      alert('メールアドレスが見つかりません。');
+      return false;
+    }
+    if (user.passwordHash !== hashPassword(password)) {
+      alert('パスワードが正しくありません。');
+      return false;
+    }
+    // Store minimal user info
+    localStorage.setItem(userKey, JSON.stringify({
+      id: user.id,
+      name: user.name,
+      email: user.email
+    }));
+    return true;
+  }
+
+  // Log out current user
+  function logout() {
+    localStorage.removeItem(userKey);
+    updateUI();
+    // Reload to ensure app.js picks up new state
+    location.reload();
+  }
+
+  // Show register form and hide login form
+  function showRegister() {
+    const loginFormContainer = document.getElementById('loginFormContainer');
+    const registerFormContainer = document.getElementById('registerFormContainer');
+    if (loginFormContainer) loginFormContainer.classList.add('hidden');
+    if (registerFormContainer) registerFormContainer.classList.remove('hidden');
+  }
+
+  // Show login form and hide register form
+  function showLogin() {
+    const loginFormContainer = document.getElementById('loginFormContainer');
+    const registerFormContainer = document.getElementById('registerFormContainer');
+    if (registerFormContainer) registerFormContainer.classList.add('hidden');
+    if (loginFormContainer) loginFormContainer.classList.remove('hidden');
+  }
+
+  // Update UI based on login state
+  function updateUI() {
     const userStr = localStorage.getItem(userKey);
-    const loginContainer = document.getElementById('loginContainer');
+    const authContainer = document.getElementById('authContainer');
     const userInfoDiv = document.getElementById('userInfo');
     const userNameSpan = document.getElementById('userName');
-    const logoutButton = document.getElementById('logoutButton');
+    const postFormSection = document.querySelector('.post-form');
+    const feedEl = document.getElementById('feed');
     if (!userStr) {
-      // no user: show login container
-      if (loginContainer) loginContainer.classList.remove('hidden');
+      // No current user: show authentication forms, hide user info, hide posting and feed
+      if (authContainer) authContainer.classList.remove('hidden');
       if (userInfoDiv) userInfoDiv.classList.add('hidden');
+      if (postFormSection) postFormSection.classList.add('hidden');
+      if (feedEl) feedEl.classList.add('hidden');
     } else {
-      const user = JSON.parse(userStr);
-      if (loginContainer) loginContainer.classList.add('hidden');
+      // Logged in: hide auth forms, show user info, show posting and feed
+      if (authContainer) authContainer.classList.add('hidden');
       if (userInfoDiv) userInfoDiv.classList.remove('hidden');
-      if (userNameSpan) {
-        userNameSpan.textContent = user.name || user.email;
+      try {
+        const user = JSON.parse(userStr);
+        if (userNameSpan) userNameSpan.textContent = user.name || user.email;
+      } catch (err) {
+        if (userNameSpan) userNameSpan.textContent = '';
       }
+      if (postFormSection) postFormSection.classList.remove('hidden');
+      if (feedEl) feedEl.classList.remove('hidden');
+      // Assign logout handler
+      const logoutButton = document.getElementById('logoutButton');
       if (logoutButton) {
-        logoutButton.onclick = () => {
-          localStorage.removeItem(userKey);
-          updateAuthUI();
-          location.reload();
-        };
+        logoutButton.onclick = logout;
       }
     }
   }
 
-  // Initialize the Google sign-in library and render the button. The
-  // initialization must occur after the script loads and DOM is ready.
+  // Initialize event listeners
   function init() {
-    updateAuthUI();
-    if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
-      console.warn('Google Identity Services not loaded');
-      return;
-    }
-    google.accounts.id.initialize({
-      client_id: CLIENT_ID,
-      callback: handleCredentialResponse
-    });
-    const loginContainer = document.getElementById('loginContainer');
-    if (loginContainer) {
-      google.accounts.id.renderButton(loginContainer, {
-        theme: 'outline',
-        size: 'medium',
-        text: 'signin_with',
-        locale: 'ja'
+    updateUI();
+    // Register event for showing register form
+    const showRegisterLink = document.getElementById('showRegister');
+    if (showRegisterLink) {
+      showRegisterLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showRegister();
       });
     }
-    // Optionally display the One Tap prompt
-    google.accounts.id.prompt();
+    // Register event for showing login form
+    const showLoginLink = document.getElementById('showLogin');
+    if (showLoginLink) {
+      showLoginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showLogin();
+      });
+    }
+    // Handle login form submission
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        if (loginUser(email, password)) {
+          updateUI();
+          // reload page to ensure app.js uses current user
+          location.reload();
+        }
+      });
+    }
+    // Handle registration form submission
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+      registerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('registerUsername').value.trim();
+        const email = document.getElementById('registerEmail').value.trim();
+        const password = document.getElementById('registerPassword').value;
+        if (!username || !email || !password) {
+          alert('全てのフィールドを入力してください。');
+          return;
+        }
+        if (registerUser(username, email, password)) {
+          updateUI();
+          location.reload();
+        }
+      });
+    }
   }
 
-  // Wait for DOMContentLoaded before initializing
   window.addEventListener('DOMContentLoaded', init);
 })();
