@@ -1,21 +1,22 @@
 :root {
-  --primary-color: #007bff;
-  --secondary-color: #f4f4f4;
-  --accent-color: #ff4081;
+  --primary-color: #de003a;
+  --secondary-color: #f5f5f5;
+  --accent-color: #c2185b;
   --text-color: #333;
+  --bg-color: #f5f5f5;
 }
 
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--secondary-color);
+  background-color: var(--bg-color);
   color: var(--text-color);
 }
 
+/* Header design */
 .header {
-  /* Gradient header and accent bar */
   background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-  border-bottom: 4px solid var(--secondary-color);
+  border-bottom: 4px solid var(--accent-color);
   color: #fff;
   padding: 0.75rem 1.5rem;
   display: flex;
@@ -24,18 +25,20 @@ body {
   gap: 1rem;
 }
 
-/* Logo styling */
+/* Logo */
 .logo {
   height: 40px;
   width: auto;
 }
 
+/* Layout containers */
 .container {
   max-width: 800px;
   margin: 1rem auto;
   padding: 0 1rem;
 }
 
+/* Post form section */
 .post-form {
   background: #fff;
   padding: 1rem;
@@ -43,11 +46,9 @@ body {
   margin-bottom: 1rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
 .post-form h2 {
   margin-top: 0;
 }
-
 .post-form textarea {
   width: 100%;
   border: 1px solid #ccc;
@@ -56,7 +57,6 @@ body {
   font-size: 1rem;
   resize: vertical;
 }
-
 .post-form button {
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
@@ -67,16 +67,15 @@ body {
   cursor: pointer;
   font-size: 1rem;
 }
-
 .post-form button:hover {
   opacity: 0.9;
 }
 
+/* Feed area */
 .feed {
   display: flex;
   flex-direction: column;
 }
-
 .post {
   background: #fff;
   padding: 1rem;
@@ -84,43 +83,21 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
-
 .post .content {
   margin-bottom: 0.5rem;
   white-space: pre-wrap;
 }
-
 .post .meta {
   font-size: 0.8rem;
   color: #666;
 }
 
-/* Utility class to hide elements */
+/* Hide by default */
 .hidden {
   display: none;
 }
 
-/* Deprecated auth-section styles; replaced by auth-container for local auth */
-.auth-section {
-  display: none;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.user-info button {
-  padding: 0.25rem 0.5rem;
-  background-color: var(--accent-color);
-  border: none;
-  color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* Authentication container styles for login and registration forms */
+/* Auth container (login/register) */
 .auth-container {
   background: #fff;
   padding: 1rem;
@@ -130,16 +107,13 @@ body {
   max-width: 400px;
   margin: 2rem auto;
 }
-
 .auth-container h2 {
   margin-top: 0;
 }
-
 .auth-container form {
   display: flex;
   flex-direction: column;
 }
-
 .auth-container input {
   margin-bottom: 0.5rem;
   padding: 0.5rem;
@@ -147,7 +121,6 @@ body {
   border-radius: 4px;
   border: 1px solid #ccc;
 }
-
 .auth-container button {
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
@@ -158,48 +131,19 @@ body {
   cursor: pointer;
   font-size: 1rem;
 }
-
 .auth-container button:hover {
   opacity: 0.9;
 }
-
 .auth-container p {
   font-size: 0.9rem;
 }
-
 .auth-container a {
   color: var(--primary-color);
   text-decoration: underline;
   cursor: pointer;
 }
 
-/* Story bar styles */
-/* Story bar is not used; hide by default */
-.story-bar {
-  display: none;
-}
-.story-item {
-  text-align: center;
-  flex: 0 0 auto;
-  width: 60px;
-}
-.story-item img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: block;
-  margin: 0 auto;
-  border: 3px solid var(--accent-color);
-}
-.story-item span {
-  display: block;
-  margin-top: 0.25rem;
-  font-size: 0.75rem;
-  color: var(--text-color);
-  white-space: nowrap;
-}
-
-/* Categories bar styles */
+/* Categories bar and chips */
 .categories {
   display: flex;
   overflow-x: auto;
@@ -221,20 +165,22 @@ body {
   color: #fff;
 }
 
-/* Navigation bar styles */
+/* Navigation bar */
 .nav-bar {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
+  gap: 1rem;
 }
 .nav-button {
   flex: 1;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
   background: var(--secondary-color);
   border: none;
   border-radius: 4px;
   color: var(--primary-color);
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 .nav-button.active,
 .nav-button:hover {
@@ -242,7 +188,7 @@ body {
   color: #fff;
 }
 
-/* Search section styles */
+/* Search section */
 .search-section {
   background: #fff;
   padding: 1rem;
@@ -255,7 +201,6 @@ body {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-right: 0.5rem;
 }
 .search-section button {
   margin-top: 0.5rem;
@@ -267,7 +212,7 @@ body {
   cursor: pointer;
 }
 
-/* Profile section styles */
+/* Profile section */
 .profile-section {
   background: #fff;
   padding: 1rem;
