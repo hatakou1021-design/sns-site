@@ -88,14 +88,13 @@
     }));
     return true;
   }
-
-  // Log out current user
-  function logout() {
-    localStorage.removeItem(userKey);
-    updateUI();
-    // Reload to ensure app.js picks up new state
-    location.reload();
-  }
+function logout() {
+  localStorage.removeItem(userKey);
+  updateUI();
+  // Redirect to login page
+  window.location.href = 'index.html';
+}
+  
 
   // Show register form and hide login form
   function showRegister() {
@@ -182,17 +181,16 @@
     }
     // Handle login form submission
     const loginForm = document.getElementById('loginForm');
+    
     if (loginForm) {
       loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const email = document.getElementById('loginEmail').value.trim();
         const password = document.getElementById('loginPassword').value;
         if (loginUser(email, password)) {
-          updateUI();
-          // reload page to ensure app.js uses current user
-          location.reload();
-        }
-      });
+                   window.location.href = 'app.html';
+          
+          );
     }
     // Handle registration form submission
     const registerForm = document.getElementById('registerForm');
@@ -207,9 +205,10 @@
           return;
         }
         if (registerUser(username, email, password)) {
-          updateUI();
-          location.reload();
-        }
+                  window.location.href = 'app.html';
+          
+          
+          
       });
     }
   }
