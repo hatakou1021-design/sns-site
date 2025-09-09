@@ -1,4 +1,4 @@
-:root {
+https://github.com/hatakou1021-design/sns-site/blob/main/styles.css:root {
   --primary-color: #de003a;
   --secondary-color: #f5f5f5;
   --accent-color: #c2185b;
@@ -93,11 +93,10 @@ body {
 }
 
 /* Hide by default */
-.hidden {
-  display: none;
+..hidden {
+  display: none !important;
 }
-
-/* Auth container (login/register) */
+/
 .auth-container {
   background: #fff;
   padding: 1rem;
