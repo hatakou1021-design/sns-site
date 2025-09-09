@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>yua - アプリ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <img id="siteLogo" src="yua_logo.png" alt="Yua ロゴ" class="logo">
+    <div id="userInfo" class="user-info">
+      <span id="userName"></span>
+      <button id="logoutButton">ログアウト</button>
+    </div>
+  </header>
+
+  <!-- Navigation bar -->
+  <nav id="navBar" class="nav-bar hidden">
+    <button id="navTimeline" class="nav-button">タイムライン</button>
+    <button id="navSearch" class="nav-button">検索</button>
+    <button id="navProfile" class="nav-button">プロフィール</button>
+  </nav>
+
+  <!-- Categories bar -->
+  <div id="categoriesBar" class="categories hidden">
+    <button class="category-chip active">すべて</button>
+    <button class="category-chip">休日</button>
+    <button class="category-chip">映画</button>
+    <button class="category-chip">スイーツ</button>
+    <button class="category-chip">テクノロジー</button>
+    <button class="category-chip">旅行</button>
+  </div>
+
+  <main class="container">
+    <!-- Search section -->
+    <section id="searchSection" class="hidden search-section">
+      <h2>検索</h2>
+      <input type="text" id="searchInput" placeholder="キーワードを入力..." />
+      <button id="searchButton">検索</button>
+      <div id="searchResults"></div>
+    </section>
+
+    <!-- Profile section -->
+    <section id="profileSection" class="hidden profile-section">
+      <h2>プロフィール</h2>
+      <p>ユーザー名: <span id="profileUsername"></span></p>
+      <p>メールアドレス: <span id="profileEmail"></span></p>
+      <h3>プロフィールを編集</h3>
+      <form id="profileForm">
+        <label for="profileUsernameInput">ユーザー名変更:</label>
+        <input type="text" id="profileUsernameInput" />
+        <button type="submit">保存</button>
+      </form>
+      <h3>ポイント</h3>
+      <p>現在のポイント: <span id="userPoints"></span></p>
+    </section>
+
+    <!-- Posting form -->
+    <section id="postSection" class="post-form">
+      <h2>新しい投稿</h2>
+      <form id="postForm">
+        <textarea id="postContent" placeholder="いまどうしてる？" rows="3" required></textarea>
+        <button type="submit">投稿</button>
+      </form>
+    </section>
+
+    <!-- Feed section -->
+    <section id="feedSection" class="feed">
+      <!-- posts will render here -->
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
