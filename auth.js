@@ -119,16 +119,25 @@
     const authContainer = document.getElementById('authContainer');
     const userInfoDiv = document.getElementById('userInfo');
     const userNameSpan = document.getElementById('userName');
-    const postFormSection = document.querySelector('.post-form');
-    const feedEl = document.getElementById('feed');
+    const postFormSection = document.getElementById('postSection');
+    const feedEl = document.getElementById('feedSection');
+    // Grab additional UI elements for navigation and secondary sections
+    const navBar = document.getElementById('navBar');
+    const categoriesBar = document.getElementById('categoriesBar');
+    const searchSection = document.getElementById('searchSection');
+    const profileSection = document.getElementById('profileSection');
     if (!userStr) {
-      // No current user: show authentication forms, hide user info, hide posting and feed
+      // No current user: show authentication forms, hide user info and all app sections
       if (authContainer) authContainer.classList.remove('hidden');
       if (userInfoDiv) userInfoDiv.classList.add('hidden');
       if (postFormSection) postFormSection.classList.add('hidden');
       if (feedEl) feedEl.classList.add('hidden');
+      if (navBar) navBar.classList.add('hidden');
+      if (categoriesBar) categoriesBar.classList.add('hidden');
+      if (searchSection) searchSection.classList.add('hidden');
+      if (profileSection) profileSection.classList.add('hidden');
     } else {
-      // Logged in: hide auth forms, show user info, show posting and feed
+      // Logged in: hide auth forms, show user info and navigation; other sections will be handled in app.js
       if (authContainer) authContainer.classList.add('hidden');
       if (userInfoDiv) userInfoDiv.classList.remove('hidden');
       try {
@@ -139,6 +148,11 @@
       }
       if (postFormSection) postFormSection.classList.remove('hidden');
       if (feedEl) feedEl.classList.remove('hidden');
+      if (navBar) navBar.classList.remove('hidden');
+      // Keep categories/search/profile sections hidden initially; app.js will show the correct one
+      if (categoriesBar) categoriesBar.classList.add('hidden');
+      if (searchSection) searchSection.classList.add('hidden');
+      if (profileSection) profileSection.classList.add('hidden');
       // Assign logout handler
       const logoutButton = document.getElementById('logoutButton');
       if (logoutButton) {
