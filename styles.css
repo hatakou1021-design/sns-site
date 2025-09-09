@@ -94,7 +94,7 @@ body {
 
 /* Hide by default */
 .hidden {
-  display: none;
+  ddisplay: none !important;
 }
 
 /* Auth container (login/register) */
